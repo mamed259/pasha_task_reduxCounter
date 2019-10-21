@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from "react";
+import { connect } from 'react-redux';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+function mapStateToProps(state) {
+  return{
+    value: state
+  }
 }
 
-export default App;
+function dispatchToProps(dispatch) {
+  return{
+    plusCounter: () => {
+        dispatch({ type: 'PLUSCOUNT' })
+    },
+    minusCounter: () => {
+        dispatch({type: 'MINUSCOUNT'})
+    }
+  }
+}
+
+class App extends Component{
+
+
+
+  render() {
+    return (
+        <div className="content">
+          <label>Counter value is: <span>{this.props.value}</span></label>
+          <span className="d-none">Note: Counter value can't be less than 0</span>
+          <br/>
+          <div>
+            <button className="btn-count" onClick={() => this.props.plusCounter()}>+</button>
+            <button className="btn-count" onClick={() => this.props.minusCounter()}>-</button>
+          </div>
+        </div>
+    );
+  }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(App);
+
+
